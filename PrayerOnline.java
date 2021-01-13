@@ -20,42 +20,58 @@ public class PrayerOnline {
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-		
+
 		JPanel panel = new JPanel();
-		
+
 		JLabel times = new JLabel();
 		times.setText("hello");
 		times.setFont(new Font("Arial", Font.PLAIN, 30));
-		
+
 		String[] places = {"Toronto", "Ottawa"};
-		
+
 		JComboBox location = new JComboBox(places);
-		
+
 		panel.add(times);
 		panel.add(location);
 		window.add(panel);
-		
+
+		printLocationTimes(times, location);
+
+		location.addActionListener (new ActionListener ()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					printLocationTimes(times, location);
+				}
+				catch(Exception b){System.out.println("Error");}
+			}
+		});
+	}
+
+	public static void printLocationTimes(JLabel times, JComboBox location) throws Exception
+	{
 		URL url = null;
 		URLConnection urlCon;
 		InputStream is;
 		BufferedReader br;
-		
-    	String item = (String)location.getSelectedItem();
-    	System.out.println(item);
-    	
-    	if(item.equals("Toronto"))
-    	{
-    		url = new URL("https://www.muslimpro.com/en/find?coordinates=43.653226%2C-79.3831843&country_code=CA&country_name=Canada&city_name=Toronto&date=&convention=ISNA&asrjuristic=Hanafi");
-    	}
-    	else if(item.equals("Ottawa"))
-    	{
-    		url = new URL("https://www.muslimpro.com/en/find?coordinates=45.4215296%2C-75.69719309999999&country_code=CA&country_name=Canada&city_name=Ottawa&date=&convention=ISNA&asrjuristic=Hanafi&highlat=Angle");
-    	}
-    	
-    	urlCon = url.openConnection();
+
+		String item = (String)location.getSelectedItem();
+		System.out.println(item);
+
+		if(item.equals("Toronto"))
+		{
+			url = new URL("https://www.muslimpro.com/en/find?coordinates=43.653226%2C-79.3831843&country_code=CA&country_name=Canada&city_name=Toronto&date=&convention=ISNA&asrjuristic=Hanafi");
+		}
+		else if(item.equals("Ottawa"))
+		{
+			url = new URL("https://www.muslimpro.com/en/find?coordinates=45.4215296%2C-75.69719309999999&country_code=CA&country_name=Canada&city_name=Ottawa&date=&convention=ISNA&asrjuristic=Hanafi&highlat=Angle");
+		}
+
+		urlCon = url.openConnection();
 		is = urlCon.getInputStream();
 		br = new BufferedReader(new InputStreamReader(is));
-		
+
 		String line = null;
 		int counter = 0;
 
@@ -69,62 +85,12 @@ public class PrayerOnline {
 				{
 					helperArray[i] = helperArray[i+1].substring(0,5); 
 				}
-				
+
 				times.setText("<html>Fajr-----------" + helperArray[0] +
 						"<br/>Sunrise------" + helperArray[1] + "<br/>Dhuhr--------" + helperArray[2] +
 						"<br/>Asr------------" + helperArray[3] + "<br/>Maghrib------" + helperArray[4] +
 						"<br/>Isha'a---------" + helperArray[5] + "<html/>");
 			}
 		}
-		
-		location.addActionListener (new ActionListener ()
-		{
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	try {
-		    		URL url = null;
-		    		URLConnection urlCon;
-		    		InputStream is;
-		    		BufferedReader br;
-		    		
-		        	String item = (String)location.getSelectedItem();
-		        	
-		        	if(item.equals("Toronto"))
-		        	{
-		        		url = new URL("https://www.muslimpro.com/en/find?coordinates=43.653226%2C-79.3831843&country_code=CA&country_name=Canada&city_name=Toronto&date=&convention=ISNA&asrjuristic=Hanafi");
-		        	}
-		        	else if(item.equals("Ottawa"))
-		        	{
-		        		url = new URL("https://www.muslimpro.com/en/find?coordinates=45.4215296%2C-75.69719309999999&country_code=CA&country_name=Canada&city_name=Ottawa&date=&convention=ISNA&asrjuristic=Hanafi&highlat=Angle");
-		        	}
-		        	
-		        	urlCon = url.openConnection();
-		    		is = urlCon.getInputStream();
-		    		br = new BufferedReader(new InputStreamReader(is));
-		    		
-		    		String line = null;
-		    		int counter = 0;
-
-		    		while((line = br.readLine()) != null)
-		    		{
-		    			counter++;
-		    			if(counter == 19)
-		    			{
-		    				String[] helperArray = line.split("<span class=\"jam-solat\">");
-		    				for(int i = 0; i < 6; i++)
-		    				{
-		    					helperArray[i] = helperArray[i+1].substring(0,5); 
-		    				}
-		    				
-		    				times.setText("<html>Fajr-----------" + helperArray[0] +
-		    						"<br/>Sunrise------" + helperArray[1] + "<br/>Dhuhr--------" + helperArray[2] +
-		    						"<br/>Asr------------" + helperArray[3] + "<br/>Maghrib------" + helperArray[4] +
-		    						"<br/>Isha'a---------" + helperArray[5] + "<html/>");
-		    			}
-		    		}
-		    	}
-		    	catch(Exception b){System.out.println("Error");}
-		    }
-		});
 	}
 }
