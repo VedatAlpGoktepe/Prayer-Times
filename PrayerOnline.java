@@ -42,13 +42,15 @@ public class PrayerOnline {
 			if(counter == 19)
 			{
 				String[] helperArray = line.split("<span class=\"jam-solat\">");
-				String helperString = helperArray[1] + helperArray[2] + helperArray[3] + helperArray[4] + helperArray[5] + helperArray[6];
-				helperArray = helperString.split("</span>");
+				for(int i = 0; i < 6; i++)
+				{
+					helperArray[i] = helperArray[i+1].substring(0,5); 
+				}
 				
 				allTimes.setText("<html>Fajr: " + helperArray[0] +
-						"<br/>Sunrise: " + helperArray[2] + "<br/>Dhuhr: " + helperArray[4] +
-						"<br/>Asr: " + helperArray[6] + "<br/>Maghrib: " + helperArray[8] +
-						"<br/>Isha'a: " + helperArray[10] + "<html/>");
+						"<br/>Sunrise: " + helperArray[1] + "<br/>Dhuhr: " + helperArray[2] +
+						"<br/>Asr: " + helperArray[3] + "<br/>Maghrib: " + helperArray[4] +
+						"<br/>Isha'a: " + helperArray[5] + "<html/>");
 			}
 		}
 	}
