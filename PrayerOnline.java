@@ -20,7 +20,6 @@ public class PrayerOnline {
 		JPanel panel1 = new JPanel();
 		
 		JLabel allTimes = new JLabel();
-		allTimes.setSize(100,200);
 		allTimes.setFont(new Font("Arial", Font.PLAIN, 30));
 		
 		panel1.add(allTimes);
